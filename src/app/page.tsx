@@ -1,65 +1,130 @@
+"use client";
+
 import Image from "next/image";
+import Link from "next/link";
+import { moviesData, Content } from "@/lib/data";
 
 export default function Home() {
+  // Находим контент с наивысшим рейтингом для Hero секции
+  const heroContent = [...moviesData].sort((a, b) => b.rating - a.rating)[0];
+  
+  // Фильтруем данные для секций
+  const popularContent = moviesData.slice(0, 15);
+  const newContent = moviesData.filter(item => parseInt(item.year) >= 2020).slice(0, 15);
+  const seriesContent = moviesData.filter(item => item.type === "сериал").slice(0, 15);
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <main className="min-h-screen">
+      {/* Hero Section */}
+      <section className="relative h-[80vh] w-full flex items-center overflow-hidden">
+        {/* Mock background image/gradient */}
+        <div className="absolute inset-0 bg-gradient-to-r from-[#0F0F11] via-[#0F0F11]/80 to-transparent z-10" />
+        <div className="absolute inset-0 bg-[#1A1A1D]" /> {/* Placeholder for hero image */}
+        
+        <div className="container relative z-20 w-full h-full flex items-center">
+          <div className="max-w-2xl">
+            <h1 className="text-5xl md:text-7xl font-bold mb-4">{heroContent.name}</h1>
+            <div className="flex items-center gap-4 text-sm text-gray-400 mb-6">
+              <span className="text-primary font-bold">{heroContent.rating}</span>
+              <span>{heroContent.year}</span>
+              <span className="border border-gray-600 px-2 py-0.5 rounded text-xs">18+</span>
+            </div>
+            <p className="text-lg text-gray-300 mb-8 line-clamp-3">
+              {heroContent.description}
+            </p>
+            <div className="flex gap-4">
+              <Link href={`/movie/${heroContent.id}`} className="bg-primary hover:bg-primary-hover text-black px-8 py-3 rounded-full font-bold transition-colors cursor-pointer">
+                Смотреть
+              </Link>
+              <Link href={`/movie/${heroContent.id}`} className="bg-white/10 hover:bg-white/20 backdrop-blur-md px-8 py-3 rounded-full font-bold transition-colors cursor-pointer">
+                О фильме
+              </Link>
+            </div>
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+      </section>
+
+      {/* Content Sections */}
+      <div className="container py-12 space-y-12">
+        <CategorySection title="Популярное сейчас" items={popularContent} />
+        <CategorySection title="Новинки" items={newContent} />
+        <CategorySection title="Сериалы" items={seriesContent} />
+      </div>
+    </main>
+  );
+}
+
+function CategorySection({ title, items }: { title: string; items: Content[] }) {
+  const scrollRef = typeof window !== 'undefined' ? null : null; // Using ref in a client component pattern if needed, but we'll use a simple approach
+
+  return (
+    <section className="relative group/section">
+      <div className="flex items-center justify-between mb-6">
+        <h2 className="text-2xl font-bold hover:text-primary transition-colors cursor-pointer inline-block">
+          {title}
+        </h2>
+        <div className="flex gap-2 opacity-0 group-hover/section:opacity-100 transition-opacity">
+          <button 
+            onClick={(e) => {
+              const el = e.currentTarget.parentElement?.parentElement?.nextElementSibling;
+              if (el) el.scrollBy({ left: -800, behavior: 'smooth' });
+            }}
+            className="w-10 h-10 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center transition-colors cursor-pointer"
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
+          </button>
+          <button 
+            onClick={(e) => {
+              const el = e.currentTarget.parentElement?.parentElement?.nextElementSibling;
+              if (el) el.scrollBy({ left: 800, behavior: 'smooth' });
+            }}
+            className="w-10 h-10 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center transition-colors cursor-pointer"
           >
-            Documentation
-          </a>
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
         </div>
-      </main>
-    </div>
+      </div>
+      
+      <div className="flex gap-6 overflow-x-auto no-scrollbar snap-x snap-mandatory scroll-smooth pb-4">
+        {items.map((item) => (
+          <div key={item.id} className="min-w-[180px] md:min-w-[220px] snap-start">
+            <MovieCard item={item} />
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function MovieCard({ item }: { item: Content }) {
+  return (
+    <Link href={`/movie/${item.id}`} className="group cursor-pointer block">
+      <div className="relative aspect-[2/3] rounded-xl overflow-hidden bg-[#1A1A1D] mb-3 border border-white/5 transition-all duration-300">
+        {/* Rating Badge */}
+        <div className="absolute top-2 left-2 z-30 bg-black/60 backdrop-blur-md px-2 py-0.5 rounded text-[10px] font-bold text-primary border border-white/10 shadow-lg">
+          {item.rating}
+        </div>
+
+        {/* Placeholder for movie poster */}
+        <div className="absolute inset-0 group-hover:bg-card-hover transition-colors duration-300 z-10" />
+        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20">
+          <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center shadow-xl shadow-primary/20 scale-90 group-hover:scale-100 transition-transform duration-300">
+            <svg className="w-6 h-6 text-black" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M8 5v14l11-7z" />
+            </svg>
+          </div>
+        </div>
+      </div>
+      <h3 className="font-semibold group-hover:text-primary transition-colors truncate">
+        {item.name}
+      </h3>
+      <p className="text-sm text-gray-400">
+        {item.year} • {item.genre.split(",")[0]}
+      </p>
+    </Link>
   );
 }

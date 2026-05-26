@@ -344,7 +344,7 @@ export const moviesData: Content[] = [
     id: "better-call-saul",
     name: "Лучше звоните Солу",
     description: "История испытаний и невзгод, которые выпали на долю адвоката по уголовным делам Сола Гудмана за пять лет до его встречи с Уолтером Уайтом.",
-    rating: 8.8,
+    rating: 9.8,
     year: "2015",
     platform: "AMC",
     country: "США",
@@ -353,7 +353,7 @@ export const moviesData: Content[] = [
     director: "Винс Гиллиган, Питер Гулд",
     scenario: "Винс Гиллиган, Питер Гулд",
     starring: ["Боб Оденкёрк", "Джонатан Бэнкс", "Ри Сихорн", "Патрик Фабиан"],
-    cover: "",
+    cover: "https://avatars.mds.yandex.net/get-kinopoisk-image/1946459/87298984-6286-425f-ab61-9afbf2c78afb/600x900",
     url: "",
     type: "сериал"
   },

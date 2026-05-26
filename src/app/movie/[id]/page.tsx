@@ -2,6 +2,14 @@ import Image from "next/image";
 import Link from "next/link";
 import { moviesData } from "@/lib/data";
 import { notFound } from "next/navigation";
+import WatchlistButton from "@/components/WatchlistButton";
+import GradientPoster from "@/components/GradientPoster";
+
+export async function generateStaticParams() {
+  return moviesData.map((movie) => ({
+    id: movie.id,
+  }));
+}
 
 export default async function MovieDetail({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -12,35 +20,36 @@ export default async function MovieDetail({ params }: { params: Promise<{ id: st
   }
 
   return (
-    <div className="min-h-screen pt-24 pb-20">
+    <div className="min-h-screen pt-24 pb-20 relative">
       {/* Background blur/gradient */}
-      <div className="fixed inset-0 bg-[#0F0F11] -z-10" />
-      <div className="fixed top-0 left-0 w-full h-[60vh] bg-gradient-to-b from-primary/5 to-transparent -z-10" />
+      {content.cover && (
+        <div className="absolute inset-0 -z-20 overflow-hidden">
+          <img src={content.cover} alt="" className="w-full h-full object-cover opacity-20 blur-2xl scale-110" />
+        </div>
+      )}
+      <div className="absolute inset-0 bg-[#0F0F11]/90 -z-10" />
+      <div className="absolute top-0 left-0 w-full h-[60vh] bg-gradient-to-b from-primary/5 to-transparent -z-10" />
 
       <div className="container flex flex-col lg:flex-row gap-12">
         {/* Left Column: Poster & Actions */}
         <div className="w-full lg:w-72 flex-shrink-0 space-y-6">
           <div className="aspect-[2/3] w-full rounded-xl overflow-hidden bg-[#1A1A1D] border border-white/5 shadow-2xl">
-            {/* Placeholder for movie poster */}
-            <div className="w-full h-full flex items-center justify-center text-gray-500 font-bold uppercase tracking-widest text-center px-4">
-              {content.name}
-            </div>
+            {content.cover ? (
+              <img src={content.cover} alt={content.name} className="w-full h-full object-cover" />
+            ) : (
+              <GradientPoster title={content.name} className="w-full h-full" />
+            )}
           </div>
           
           <div className="space-y-3">
-            <button className="w-full bg-white/5 hover:bg-white/10 py-3 rounded-lg font-semibold transition-colors flex items-center justify-center gap-2">
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
-              </svg>
-              Буду смотреть
-            </button>
+            <WatchlistButton id={content.id} />
             <div className="flex gap-2">
-              <button className="flex-1 bg-white/5 hover:bg-white/10 py-3 rounded-lg font-semibold transition-colors">
+              <Link href={`/watch/${content.id}`} className="flex-1 bg-primary hover:bg-primary-hover text-black py-3 rounded-lg font-semibold transition-colors text-center block">
+                Смотреть
+              </Link>
+              <Link href={`/watch/${content.id}`} className="bg-white/5 hover:bg-white/10 px-4 py-3 rounded-lg font-semibold transition-colors text-center block">
                 Трейлер
-              </button>
-              <button className="bg-white/5 hover:bg-white/10 px-4 rounded-lg transition-colors">
-                ...
-              </button>
+              </Link>
             </div>
           </div>
 
@@ -127,6 +136,39 @@ export default async function MovieDetail({ params }: { params: Promise<{ id: st
               </div>
             </div>
           </div>
+        </div>
+      </div>
+
+      {/* Похожие фильмы */}
+      <div className="container mx-auto px-8 md:px-16 pb-20">
+        <h3 className="text-2xl font-bold mb-6">Смотрите также</h3>
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
+          {moviesData
+            .filter((m) => m.id !== content.id && m.genre.split(",").some(g => content.genre.includes(g.trim())))
+            .slice(0, 6)
+            .map((item) => (
+              <Link key={item.id} href={`/movie/${item.id}`} className="group cursor-pointer block">
+                <div className="relative aspect-[2/3] rounded-xl overflow-hidden bg-[#1A1A1D] mb-3 border border-white/5 transition-all duration-300">
+                  <div className="absolute top-2 left-2 z-30 bg-black/60 backdrop-blur-md px-2 py-0.5 rounded text-[10px] font-bold text-primary border border-white/10">
+                    {item.rating}
+                  </div>
+                  <div className="absolute inset-0 group-hover:bg-black/50 transition-colors duration-300 z-10" />
+                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20">
+                    <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center shadow-xl shadow-primary/20 scale-90 group-hover:scale-100 transition-transform duration-300">
+                      <svg className="w-5 h-5 text-black" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M8 5v14l11-7z" />
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+                <h4 className="font-semibold text-sm group-hover:text-primary transition-colors truncate">
+                  {item.name}
+                </h4>
+                <p className="text-xs text-gray-500">
+                  {item.year}
+                </p>
+              </Link>
+            ))}
         </div>
       </div>
     </div>

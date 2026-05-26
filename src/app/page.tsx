@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { moviesData, Content } from "@/lib/data";
+import GradientPoster from "@/components/GradientPoster";
 
 export default function Home() {
   // Находим контент с наивысшим рейтингом для Hero секции
@@ -17,9 +18,13 @@ export default function Home() {
     <main className="min-h-screen">
       {/* Hero Section */}
       <section className="relative h-[80vh] w-full flex items-center overflow-hidden">
-        {/* Mock background image/gradient */}
+        {heroContent.cover ? (
+          <img src={heroContent.cover} alt={heroContent.name} className="absolute inset-0 w-full h-full object-cover z-0" />
+        ) : (
+          <GradientPoster title={heroContent.name} className="absolute inset-0 w-full h-full z-0 opacity-50" />
+        )}
         <div className="absolute inset-0 bg-gradient-to-r from-[#0F0F11] via-[#0F0F11]/80 to-transparent z-10" />
-        <div className="absolute inset-0 bg-[#1A1A1D]" /> {/* Placeholder for hero image */}
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0C] via-transparent to-transparent z-10" />
         
         <div className="container relative z-20 w-full h-full flex items-center">
           <div className="max-w-2xl">
@@ -33,7 +38,7 @@ export default function Home() {
               {heroContent.description}
             </p>
             <div className="flex gap-4">
-              <Link href={`/movie/${heroContent.id}`} className="bg-primary hover:bg-primary-hover text-black px-8 py-3 rounded-full font-bold transition-colors cursor-pointer">
+              <Link href={`/watch/${heroContent.id}`} className="bg-primary hover:bg-primary-hover text-black px-8 py-3 rounded-full font-bold transition-colors cursor-pointer">
                 Смотреть
               </Link>
               <Link href={`/movie/${heroContent.id}`} className="bg-white/10 hover:bg-white/20 backdrop-blur-md px-8 py-3 rounded-full font-bold transition-colors cursor-pointer">
@@ -109,7 +114,13 @@ function MovieCard({ item }: { item: Content }) {
           {item.rating}
         </div>
 
-        {/* Placeholder for movie poster */}
+        {item.cover ? (
+          <img src={item.cover} alt={item.name} className="w-full h-full object-cover" />
+        ) : (
+          <GradientPoster title={item.name} className="w-full h-full" />
+        )}
+
+        {/* Hover overlay */}
         <div className="absolute inset-0 group-hover:bg-card-hover transition-colors duration-300 z-10" />
         <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20">
           <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center shadow-xl shadow-primary/20 scale-90 group-hover:scale-100 transition-transform duration-300">

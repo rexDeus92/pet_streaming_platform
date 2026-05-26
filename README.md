@@ -1,36 +1,131 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🎬 LUMINA — Pet Streaming Platform
 
-## Getting Started
+> **Персональный кинотеатр прямо в браузере**  
+> Портфельный проект — фронтенд стримингового сервиса в стиле Netflix/Кинопоиск
 
-First, run the development server:
+🌐 **Live Demo:** [rexdeus92.github.io/pet_streaming_platform](https://rexdeus92.github.io/pet_streaming_platform/)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+---
+
+## 📖 О проекте
+
+**LUMINA** — это полноценный фронтенд стримингового сервиса, разработанный как портфельный проект. Сайт имитирует работу таких платформ, как Netflix или Кинопоиск: пользователь может просматривать каталог фильмов и сериалов, читать подробную информацию о каждом тайтле, добавлять контент в личный список «Буду смотреть» и искать нужное через мгновенный поиск.
+
+Проект ориентирован на демонстрацию навыков фронтенд-разработки: работу с Next.js App Router, TypeScript, Tailwind CSS v4, адаптивную вёрстку и современный UI/UX дизайн.
+
+---
+
+## ✨ Возможности
+
+| Раздел | Функционал |
+|---|---|
+| **Главная** | Hero-баннер с лучшим фильмом по рейтингу, горизонтальные слайдеры «Популярное», «Новинки», «Сериалы» |
+| **Фильмы** | Полный каталог фильмов с фильтрацией и сортировкой |
+| **Сериалы** | Отдельный раздел для сериалов |
+| **Страница тайтла** | Постер, описание, рейтинг LUMINA, режиссёр, сценарий, актёры, блок «Смотрите также» |
+| **Страница просмотра** | Плеер-заглушка для демонстрации роутинга |
+| **Мой список** | Сохранение в `localStorage`, добавление/удаление, скелетон загрузки |
+| **Поиск** | Мгновенный поиск по названию, жанру, режиссёру, актёрам с навигацией клавиатурой |
+
+### 🎨 UI/UX особенности
+
+- **Dark mode** — тёмная тема с акцентным цветом по умолчанию
+- **Glassmorphism** — «стеклянный» хедер с `backdrop-blur`
+- **Hover-анимации** — кнопка воспроизведения при наведении на постер, плавные переходы
+- **Адаптивность** — мобильное меню-гамбургер, резиновая сетка на всех экранах
+- **GradientPoster** — автоматически генерируемый постер-заглушка для тайтлов без обложки
+- **Keyboard shortcuts** — поиск закрывается по `Esc`, навигация стрелками по результатам
+
+---
+
+## 🗂️ Структура проекта
+
+```
+streaming_platform/
+├── src/
+│   ├── app/                         # Next.js App Router
+│   │   ├── layout.tsx               # Root layout (Header + Footer)
+│   │   ├── page.tsx                 # Главная страница
+│   │   ├── movies/                  # Каталог фильмов
+│   │   ├── series/                  # Каталог сериалов
+│   │   ├── movie/[id]/              # Детальная страница тайтла
+│   │   ├── watch/[id]/              # Страница просмотра (плеер)
+│   │   └── mylist/                  # «Мой список» (localStorage)
+│   ├── components/
+│   │   ├── Header.tsx               # Фиксированный хедер с поиском и мобильным меню
+│   │   ├── Footer.tsx               # Подвал с навигацией
+│   │   ├── SearchModal.tsx          # Модальный поиск с мгновенными результатами
+│   │   ├── WatchlistButton.tsx      # Кнопка «Буду смотреть» (localStorage)
+│   │   ├── GradientPoster.tsx       # Постер-заглушка для контента без обложки
+│   │   └── Logo.tsx                 # SVG-логотип LUMINA
+│   └── lib/
+│       └── data.ts                  # База данных фильмов и сериалов (TypeScript)
+├── public/                          # Статические файлы
+├── next.config.ts                   # Конфиг Next.js (static export, basePath)
+├── package.json
+└── tsconfig.json
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🛠️ Технологии
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **[Next.js 16](https://nextjs.org/)** — App Router, Static Export (`output: 'export'`), SSG (`generateStaticParams`)
+- **[React 19](https://react.dev/)** — функциональные компоненты, хуки (`useState`, `useEffect`, `useRef`)
+- **[TypeScript 5](https://www.typescriptlang.org/)** — строгая типизация, интерфейс `Content`
+- **[Tailwind CSS v4](https://tailwindcss.com/)** — утилитарная стилизация, кастомные токены
+- **[gh-pages](https://github.com/tschaub/gh-pages)** — деплой на GitHub Pages
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## 🚀 Локальный запуск
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+# 1. Клонировать репозиторий
+git clone https://github.com/rexDeus92/pet_streaming_platform.git
+cd pet_streaming_platform
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+# 2. Установить зависимости
+npm install
 
-## Deploy on Vercel
+# 3. Запустить дев-сервер
+npm run dev
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Откройте [http://localhost:3000](http://localhost:3000) в браузере.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+## 📦 Деплой
+
+Проект задеплоен на **GitHub Pages** через static export Next.js.
+
+```bash
+# Сборка и деплой на GitHub Pages
+npm run deploy
+```
+
+Скрипт `predeploy` автоматически запускает `next build`, а `deploy` отправляет папку `out/` на ветку `gh-pages`.
+
+---
+
+## 📚 Каталог контента
+
+В базе данных (`src/lib/data.ts`) содержится **30 тайтлов** — культовые фильмы и сериалы с рейтингами, описаниями, режиссёрами, сценаристами и актёрами:
+
+| Тип | Примеры |
+|---|---|
+| 🎬 Фильмы | Интерстеллар, Начало, Тёмный рыцарь, Матрица, Форрест Гамп, Крестный отец... |
+| 📺 Сериалы | Во все тяжкие, Шерлок, Пацаны, Чернобыль, Аркейн, Одни из нас... |
+
+---
+
+## 📄 Лицензия
+
+Проект создан в учебных и портфельных целях. Данные о фильмах носят демонстрационный характер.
+
+---
+
+<div align="center">
+  Сделано с ❤️ для портфолио
+</div>

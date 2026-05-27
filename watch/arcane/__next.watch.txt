@@ -1,0 +1,5 @@
+1:"$Sreact.fragment"
+2:I[32687,["/pet_streaming_platform/_next/static/chunks/15uw_82~3d3a8.js","/pet_streaming_platform/_next/static/chunks/08f_kyob-70to.js"],"default"]
+3:I[15232,["/pet_streaming_platform/_next/static/chunks/15uw_82~3d3a8.js","/pet_streaming_platform/_next/static/chunks/08f_kyob-70to.js"],"default"]
+4:[]
+0:{"rsc":["$","$1","c",{"children":[null,["$","$L2",null,{"parallelRouterKey":"children","template":["$","$L3",null,{}]}]]}],"isPartial":false,"staleTime":300,"varyParams":"$W4","buildId":"gT7ywPU6E40uJKtD0dLhI"}
